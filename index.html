@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080d1c">
+<title>آزمایشگاه دایره مثلثاتی | سینوس، کسینوس و تانژانت</title>
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#080d1c;--bg2:#0d1530;--panel:rgba(18,29,58,.82);--panel2:rgba(13,23,47,.92);
+  --line:rgba(116,150,222,.20);--grid:rgba(105,145,220,.075);--text:#edf4ff;--muted:#9badcc;
+  --cyan:#42e8ff;--pink:#ff58bd;--violet:#a58bff;--lime:#c7ff69;--amber:#ffc86b;
+  --shadow:0 18px 55px rgba(0,0,0,.28);--radius:20px;
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% -15%,rgba(42,75,150,.28),transparent 50%),radial-gradient(circle at 90% 35%,rgba(111,44,185,.12),transparent 30%),var(--bg);color:var(--text);font-family:Tahoma,"Segoe UI",sans-serif;line-height:1.65;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:34px 34px;mask-image:linear-gradient(to bottom,black,transparent 85%);z-index:-1}
+button,input{font:inherit}button{cursor:pointer}
+.app{width:min(1480px,calc(100% - 32px));margin:0 auto;padding:25px 0 36px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}
+.brand{display:flex;align-items:center;gap:13px}.brand-mark{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(66,232,255,.2),rgba(165,139,255,.2));border:1px solid rgba(66,232,255,.35);box-shadow:0 0 25px rgba(66,232,255,.12);font-size:25px;color:var(--cyan)}
+.brand h1{margin:0;font-size:clamp(18px,2.4vw,27px);letter-spacing:-.5px}.brand p{margin:2px 0 0;color:var(--muted);font-size:12px}
+.top-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.chip{border:1px solid var(--line);background:rgba(14,24,49,.72);color:var(--muted);border-radius:999px;padding:7px 12px;font-size:12px}.icon-btn{width:39px;height:39px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--text);font-size:18px}
+.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin:0 2px 17px}.eyebrow{color:var(--cyan);font-size:11px;letter-spacing:1.7px;font-weight:bold}.hero h2{font-size:clamp(22px,3vw,34px);margin:3px 0 2px}.hero p{margin:0;color:var(--muted);font-size:13px}.hero-note{max-width:290px;padding:10px 13px;border-right:2px solid var(--violet);background:linear-gradient(90deg,transparent,rgba(165,139,255,.08));border-radius:9px;color:#c9c1ff;font-size:12px}
+.dashboard{display:grid;grid-template-columns:minmax(245px,.82fr) minmax(420px,1.55fr) minmax(260px,.9fr);gap:15px;align-items:stretch}
+.panel{background:linear-gradient(145deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(14px);min-width:0}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:17px 18px 10px}.panel-title{font-size:14px;font-weight:bold;display:flex;align-items:center;gap:9px}.panel-title:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}.subtle{font-size:11px;color:var(--muted)}
+.controls-panel{padding-bottom:16px}.angle-display{margin:8px 16px 15px;padding:14px;border:1px solid rgba(66,232,255,.20);border-radius:15px;background:linear-gradient(135deg,rgba(66,232,255,.08),rgba(165,139,255,.06));text-align:center}.angle-big{font-size:32px;font-weight:800;color:var(--cyan);font-variant-numeric:tabular-nums;line-height:1.25}.angle-rad{color:#c1b5ff;font-size:14px;margin-top:5px;direction:ltr}.field-label{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px;margin:0 18px 7px}.range-wrap{padding:0 18px}.range{width:100%;accent-color:var(--cyan);cursor:pointer;direction:ltr}.range-limits{display:flex;justify-content:space-between;color:#7184a8;font-size:10px;direction:ltr;margin-top:0}.number-row{display:flex;gap:8px;align-items:center;margin:13px 18px}.number-input{width:100%;min-width:0;background:rgba(5,12,27,.7);border:1px solid var(--line);border-radius:10px;color:var(--text);padding:9px 10px;direction:ltr;text-align:center;outline:none}.number-input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(66,232,255,.09)}.unit{color:var(--muted);font-size:12px;white-space:nowrap}.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 18px}.btn{border:1px solid var(--line);border-radius:11px;padding:9px 10px;background:rgba(27,43,79,.65);color:var(--text);font-size:12px;transition:.18s ease}.btn:hover{border-color:rgba(66,232,255,.55);transform:translateY(-1px);background:rgba(40,66,111,.72)}.btn.primary{background:linear-gradient(110deg,rgba(17,158,190,.24),rgba(118,83,211,.24));border-color:rgba(66,232,255,.38)}.btn.active{border-color:var(--lime);color:var(--lime)}.presets{padding:2px 18px 0;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.preset{padding:7px 2px;border-radius:9px;border:1px solid rgba(116,150,222,.17);background:rgba(9,17,37,.7);color:#bdc9e2;font-size:11px}.preset:hover,.preset.selected{border-color:var(--cyan);color:var(--cyan);background:rgba(66,232,255,.08)}.control-footer{margin:15px 18px 0;padding-top:12px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:11px;gap:8px}.switch{display:flex;align-items:center;gap:7px;cursor:pointer}.switch input{accent-color:var(--cyan)}
+.circle-panel{padding:0 14px 14px;display:flex;flex-direction:column}.circle-tools{display:flex;align-items:center;gap:7px}.mini-btn{background:rgba(10,19,40,.75);border:1px solid var(--line);color:var(--muted);border-radius:9px;padding:6px 9px;font-size:11px}.mini-btn.active{color:var(--lime);border-color:rgba(199,255,105,.5)}.diagram-wrap{position:relative;flex:1;min-height:400px;display:grid;place-items:center;padding:0 4px}.diagram{width:min(100%,590px);height:auto;max-height:590px;overflow:visible;touch-action:none;cursor:crosshair;user-select:none}.diagram text{font-family:Tahoma,"Segoe UI",sans-serif;user-select:none}.circle-base{fill:rgba(49,89,157,.07);stroke:rgba(119,161,235,.82);stroke-width:2.1}.axis{stroke:rgba(167,190,230,.52);stroke-width:1.2}.axis-dash{stroke:rgba(167,190,230,.24);stroke-width:1;stroke-dasharray:3 6}.radius-line{stroke:#fff;stroke-width:2.6;filter:drop-shadow(0 0 5px rgba(255,255,255,.65))}.cos-line{stroke:var(--cyan);stroke-width:4;stroke-linecap:round;filter:drop-shadow(0 0 5px rgba(66,232,255,.65))}.sin-line{stroke:var(--pink);stroke-width:4;stroke-linecap:round;filter:drop-shadow(0 0 5px rgba(255,88,189,.6))}.projection{stroke:rgba(227,238,255,.54);stroke-width:1.3;stroke-dasharray:5 5}.tangent-line{stroke:var(--amber);stroke-width:2.4;stroke-dasharray:5 4}.point-glow{fill:var(--lime);filter:drop-shadow(0 0 8px var(--lime))}.origin{fill:#eaf4ff}.quadrant-label{fill:rgba(174,194,231,.32);font-size:19px;font-weight:bold}.axis-label{fill:#cad7ef;font-size:13px}.value-label{font-size:13px;font-weight:bold}.diagram-legend{display:flex;justify-content:center;flex-wrap:wrap;gap:15px;padding:1px 5px 5px;color:var(--muted);font-size:11px}.legend-item{display:flex;align-items:center;gap:6px}.legend-dot{width:9px;height:9px;border-radius:50%}.diagram-tip{text-align:center;color:#8093b7;font-size:10px;margin:0 0 1px}
+.results-panel{padding-bottom:15px}.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:8px 14px 0}.result-card{border:1px solid var(--line);border-radius:14px;padding:12px 11px;background:rgba(7,15,32,.55);min-width:0}.result-card.wide{grid-column:1/-1}.result-name{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;align-items:center}.result-symbol{font-size:16px;font-weight:bold;direction:ltr}.result-value{font-size:clamp(19px,2vw,25px);font-weight:800;direction:ltr;text-align:center;margin:5px 0 0;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.result-exact{text-align:center;color:#b9c9e7;font-size:12px;min-height:22px;direction:ltr}.cyan{color:var(--cyan)}.pink{color:var(--pink)}.violet{color:var(--violet)}.amber{color:var(--amber)}.coord-box{padding:12px 14px;margin:10px 14px 0;border-radius:13px;background:rgba(165,139,255,.07);border:1px solid rgba(165,139,255,.20)}.coord-title{color:#c8bbff;font-size:12px;margin-bottom:5px}.coord-value{direction:ltr;text-align:center;font-size:18px;font-weight:bold}.quadrant-box{margin:10px 14px 0;padding:11px 13px;border:1px solid var(--line);border-radius:13px}.quadrant-name{font-size:15px;font-weight:bold;color:var(--lime)}.signs{display:flex;gap:7px;flex-wrap:wrap;margin-top:7px}.sign-pill{font-size:11px;padding:3px 8px;border-radius:8px;background:rgba(255,255,255,.05);color:var(--muted)}.sign-pill b{margin-right:4px}.explain{margin:10px 14px 0;padding:11px 13px;border-right:2px solid var(--violet);background:rgba(165,139,255,.06);border-radius:9px;color:#c2cce1;font-size:11px;line-height:1.9}.explain strong{color:#e4ddff}
+.lower-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:15px;margin-top:15px}.lower-panel{padding:0 0 14px}.lower-content{padding:7px 17px 0}.formula-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.formula{background:rgba(7,15,32,.55);border:1px solid var(--line);border-radius:12px;padding:11px;text-align:center}.formula strong{display:block;font-size:18px;direction:ltr}.formula small{color:var(--muted);font-size:10px}.sign-table{width:100%;border-collapse:collapse;text-align:center;font-size:12px}.sign-table th,.sign-table td{padding:8px 5px;border-bottom:1px solid rgba(116,150,222,.13)}.sign-table th{color:var(--muted);font-weight:normal}.sign-table tr.current{background:rgba(66,232,255,.075);outline:1px solid rgba(66,232,255,.23)}.plus{color:var(--lime);font-weight:bold}.minus{color:var(--pink);font-weight:bold}.undefined{color:var(--amber);font-size:10px}.quiz{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.quiz label{font-size:11px;color:var(--muted)}.quiz input{display:block;margin-top:5px;width:100%;background:rgba(5,12,27,.7);border:1px solid var(--line);border-radius:9px;padding:8px;color:var(--text);text-align:center;direction:ltr;min-width:0}.quiz-actions{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}.feedback{font-size:11px;color:var(--muted);min-height:24px;margin-top:8px}.footer{text-align:center;color:#627494;font-size:10px;margin-top:18px}
+body.light{color-scheme:light;--bg:#eef4fc;--bg2:#fff;--panel:rgba(255,255,255,.92);--panel2:rgba(246,250,255,.96);--line:rgba(48,83,143,.17);--grid:rgba(48,83,143,.06);--text:#182947;--muted:#647796;--shadow:0 15px 40px rgba(42,67,107,.10)}
+body.light{background:radial-gradient(ellipse at 50% -15%,rgba(89,153,235,.15),transparent 50%),var(--bg)}body.light:before{opacity:.7}body.light .chip,body.light .mini-btn,body.light .btn,body.light .preset{background:rgba(235,242,252,.85);color:#435675}body.light .number-input,body.light .quiz input{background:#f6f9ff;color:#182947}body.light .result-card,body.light .formula{background:rgba(244,248,255,.85)}body.light .axis-label{fill:#526785}body.light .quadrant-label{fill:rgba(61,88,132,.28)}body.light .explain{color:#536482}body.light .sign-pill{background:rgba(30,70,130,.06)}body.light .origin{fill:#253d60}
+@media(max-width:1120px){.dashboard{grid-template-columns:minmax(230px,.8fr) minmax(390px,1.3fr)}.results-panel{grid-column:1/-1}.results-grid{grid-template-columns:repeat(4,1fr)}.result-card.wide{grid-column:auto}.coord-box,.quadrant-box,.explain{margin-left:14px;margin-right:14px}.lower-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.app{width:min(100% - 20px,620px);padding-top:14px}.topbar{align-items:flex-start}.chip{display:none}.hero{align-items:flex-start;flex-direction:column}.hero-note{max-width:none}.dashboard{grid-template-columns:1fr}.circle-panel{grid-row:1}.diagram-wrap{min-height:0}.diagram{width:min(100%,510px)}.controls-panel{grid-row:2}.results-panel{grid-row:3;grid-column:auto}.results-grid{grid-template-columns:1fr 1fr}.lower-grid{grid-template-columns:1fr}.brand p{font-size:10px}.diagram-tip{font-size:10px}}
+@media(max-width:390px){.app{width:calc(100% - 14px)}.panel-head{padding-right:13px;padding-left:13px}.results-grid{padding-right:9px;padding-left:9px;gap:6px}.result-card{padding:10px 7px}.result-value{font-size:19px}.presets{padding-right:13px;padding-left:13px}.formula-row{gap:5px}.formula{padding:8px 4px}.formula strong{font-size:15px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">∠</div>
+      <div><h1>آزمایشگاه دایره مثلثاتی</h1><p>TRIGONOMETRY · INTERACTIVE LEARNING LAB</p></div>
+    </div>
+    <div class="top-actions"><span class="chip">MATHEMATICS / GRADE 10–12</span><span class="chip">OFFLINE READY</span><button class="icon-btn" id="themeBtn" title="تغییر پوسته" aria-label="تغییر پوسته">☼</button></div>
+  </header>
+  <section class="hero">
+    <div><div class="eyebrow">UNIT CIRCLE / LIVE EXPLORATION</div><h2>زاویه را بچرخان؛ نسبت‌ها را کشف کن</h2><p>با حرکت روی دایره واحد، ارتباط زاویه، مختصات و نسبت‌های مثلثاتی را ببین.</p></div>
+    <div class="hero-note">در دایره واحد، مختصات هر نقطه برابر است با <b dir="ltr">(cos θ , sin θ)</b>.</div>
+  </section>
+
+  <main class="dashboard">
+    <section class="panel controls-panel">
+      <div class="panel-head"><div class="panel-title">کنترل زاویه</div><span class="subtle">ANGLE CONTROL</span></div>
+      <div class="angle-display"><div class="angle-big" id="angleBig">۴۵°</div><div class="angle-rad" id="angleRad">π / 4 rad</div></div>
+      <div class="field-label"><label for="angleSlider">تغییر پیوسته زاویه</label><span>θ</span></div>
+      <div class="range-wrap"><input class="range" type="range" id="angleSlider" min="-360" max="720" step="1" value="45"><div class="range-limits"><span>−۳۶۰°</span><span>۷۲۰°</span></div></div>
+      <div class="field-label" style="margin-top:13px"><label for="angleInput">ورود مستقیم زاویه</label><span>−۳۶۰ تا ۷۲۰</span></div>
+      <div class="number-row"><input class="number-input" type="number" id="angleInput" min="-360" max="720" step="0.1" value="45" aria-label="زاویه بر حسب درجه"><span class="unit">درجه</span></div>
+      <div class="btn-row"><button class="btn" id="minusBtn">− ۱۵°</button><button class="btn" id="plusBtn">+ ۱۵°</button><button class="btn primary" id="resetBtn">بازنشانی</button><button class="btn" id="rotateBtn">▶ چرخش خودکار</button></div>
+      <div class="field-label"><span>زاویه‌های پرکاربرد</span><span class="subtle">PRESETS</span></div>
+      <div class="presets" id="presets">
+        <button class="preset" data-angle="0">۰°</button><button class="preset" data-angle="30">۳۰°</button><button class="preset selected" data-angle="45">۴۵°</button><button class="preset" data-angle="60">۶۰°</button>
+        <button class="preset" data-angle="90">۹۰°</button><button class="preset" data-angle="120">۱۲۰°</button><button class="preset" data-angle="135">۱۳۵°</button><button class="preset" data-angle="150">۱۵۰°</button>
+        <button class="preset" data-angle="180">۱۸۰°</button><button class="preset" data-angle="210">۲۱۰°</button><button class="preset" data-angle="225">۲۲۵°</button><button class="preset" data-angle="240">۲۴۰°</button>
+        <button class="preset" data-angle="270">۲۷۰°</button><button class="preset" data-angle="300">۳۰۰°</button><button class="preset" data-angle="315">۳۱۵°</button><button class="preset" data-angle="330">۳۳۰°</button><button class="preset" data-angle="360">۳۶۰°</button>
+      </div>
+      <div class="control-footer"><label class="switch"><input type="checkbox" id="showTangent" checked> نمایش خط تانژانت</label><label class="switch"><input type="checkbox" id="showLabels" checked> برچسب‌ها</label></div>
+    </section>
+
+    <section class="panel circle-panel">
+      <div class="panel-head"><div class="panel-title">نمایش زنده دایره واحد</div><div class="circle-tools"><button class="mini-btn" id="snapBtn" title="گرد کردن زاویه به نزدیک‌ترین درجه">گرد کردن</button><span class="subtle">r = 1</span></div></div>
+      <div class="diagram-wrap">
+        <svg class="diagram" id="unitCircle" viewBox="0 0 560 560" role="img" aria-label="دایره مثلثاتی تعاملی؛ برای تغییر زاویه روی دایره بکشید">
+          <defs>
+            <radialGradient id="circleFill"><stop offset="0%" stop-color="#284b86" stop-opacity=".08"/><stop offset="100%" stop-color="#284b86" stop-opacity=".01"/></radialGradient>
+            <filter id="softGlow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <circle cx="280" cy="280" r="210" fill="url(#circleFill)" class="circle-base"/>
+          <g id="ticks"></g>
+          <g id="axes">
+            <line x1="35" y1="280" x2="525" y2="280" class="axis"/><line x1="280" y1="525" x2="280" y2="35" class="axis"/>
+            <path d="M 519 274 L 527 280 L 519 286 M 274 41 L 280 33 L 286 41" fill="none" stroke="rgba(190,211,245,.7)" stroke-width="1.5"/>
+            <text x="533" y="299" class="axis-label">x</text><text x="295" y="33" class="axis-label">y</text>
+          </g>
+          <g id="quadrantTexts"><text x="370" y="175" class="quadrant-label">ربع اول</text><text x="120" y="175" class="quadrant-label">ربع دوم</text><text x="120" y="405" class="quadrant-label">ربع سوم</text><text x="370" y="405" class="quadrant-label">ربع چهارم</text></g>
+          <g id="tangentGroup"><line id="tangentAxis" x1="490" y1="45" x2="490" y2="515" class="axis-dash"/><line id="tangentSegment" x1="490" y1="280" x2="490" y2="280" class="tangent-line"/><circle id="tangentPoint" cx="490" cy="280" r="4" fill="#ffc86b"/></g>
+          <g id="projectionGroup">
+            <line id="projectionLine" x1="428.5" y1="124.5" x2="428.5" y2="280" class="projection"/>
+            <line id="cosSegment" x1="280" y1="280" x2="428.5" y2="280" class="cos-line"/>
+            <line id="sinSegment" x1="428.5" y1="280" x2="428.5" y2="124.5" class="sin-line"/>
+          </g>
+          <path id="angleArc" d="" fill="none" stroke="#a58bff" stroke-width="3" stroke-linecap="round"/>
+          <line id="radiusLine" x1="280" y1="280" x2="428.5" y2="124.5" class="radius-line"/>
+          <circle cx="280" cy="280" r="4" class="origin"/>
+          <circle id="pointHalo" cx="428.5" cy="124.5" r="10" fill="none" stroke="rgba(199,255,105,.35)" stroke-width="5"/>
+          <circle id="movingPoint" cx="428.5" cy="124.5" r="6.5" class="point-glow"/>
+          <g id="diagramLabels"><text id="cosLabel" x="350" y="301" class="value-label" fill="#42e8ff">cos θ</text><text id="sinLabel" x="438" y="205" class="value-label" fill="#ff58bd">sin θ</text><text id="pointLabel" x="445" y="112" class="value-label" fill="#c7ff69">P</text></g>
+        </svg>
+      </div>
+      <div class="diagram-legend"><span class="legend-item"><i class="legend-dot" style="background:var(--cyan)"></i>کسینوس (مؤلفه افقی)</span><span class="legend-item"><i class="legend-dot" style="background:var(--pink)"></i>سینوس (مؤلفه عمودی)</span><span class="legend-item"><i class="legend-dot" style="background:#fff"></i>شعاع واحد</span><span class="legend-item"><i class="legend-dot" style="background:var(--amber)"></i>تانژانت</span></div>
+      <p class="diagram-tip">برای تغییر زاویه، نقطه سبزرنگ را بکشید یا روی محیط دایره ضربه بزنید.</p>
+    </section>
+
+    <section class="panel results-panel">
+      <div class="panel-head"><div class="panel-title">خروجی محاسبات</div><span class="subtle">LIVE VALUES</span></div>
+      <div class="results-grid">
+        <div class="result-card"><div class="result-name"><span>سینوس</span><b class="result-symbol pink">sin θ</b></div><div class="result-value pink" id="sinValue">0.7071</div><div class="result-exact" id="sinExact">√۲ / ۲</div></div>
+        <div class="result-card"><div class="result-name"><span>کسینوس</span><b class="result-symbol cyan">cos θ</b></div><div class="result-value cyan" id="cosValue">0.7071</div><div class="result-exact" id="cosExact">√۲ / ۲</div></div>
+        <div class="result-card wide"><div class="result-name"><span>تانژانت</span><b class="result-symbol amber">tan θ</b></div><div class="result-value amber" id="tanValue">1.0000</div><div class="result-exact" id="tanExact">۱</div></div>
+      </div>
+      <div class="coord-box"><div class="coord-title">مختصات نقطه روی دایره واحد</div><div class="coord-value" id="coordValue">P (0.7071 , 0.7071)</div></div>
+      <div class="quadrant-box"><div class="subtle">موقعیت زاویه</div><div class="quadrant-name" id="quadrantName">ربع اول</div><div class="signs"><span class="sign-pill">sin <b id="sinSign" class="plus">+</b></span><span class="sign-pill">cos <b id="cosSign" class="plus">+</b></span><span class="sign-pill">tan <b id="tanSign" class="plus">+</b></span></div></div>
+      <div class="explain" id="explanation"><strong>چگونه بخوانیم؟</strong><br>مختصات نقطه برابر (cos θ, sin θ) است؛ بنابراین در این زاویه، هر دو مؤلفه مثبت‌اند و tan θ از تقسیم سینوس بر کسینوس به‌دست می‌آید.</div>
+    </section>
+  </main>
+
+  <section class="lower-grid">
+    <section class="panel lower-panel">
+      <div class="panel-head"><div class="panel-title">راهنمای کشف روابط</div><span class="subtle">KEY RELATIONS</span></div>
+      <div class="lower-content">
+        <div class="formula-row">
+          <div class="formula"><strong class="pink">sin θ = y</strong><small>مؤلفه عمودی نقطه</small></div>
+          <div class="formula"><strong class="cyan">cos θ = x</strong><small>مؤلفه افقی نقطه</small></div>
+          <div class="formula"><strong class="amber">tan θ = y / x</strong><small>به شرط x ≠ ۰</small></div>
+        </div>
+        <p class="subtle" style="margin:12px 2px 0;line-height:1.9">چون شعاع دایره واحد برابر ۱ است، رابطه فیثاغورثی به صورت <b dir="ltr">sin²θ + cos²θ = 1</b> برقرار می‌ماند. هرگاه <b dir="ltr">cos θ = 0</b> باشد، تانژانت تعریف نمی‌شود.</p>
+      </div>
+    </section>
+    <section class="panel lower-panel">
+      <div class="panel-head"><div class="panel-title">علامت نسبت‌ها در ربع‌ها</div><span class="subtle">QUADRANT SIGN MAP</span></div>
+      <div class="lower-content">
+        <table class="sign-table"><thead><tr><th>موقعیت</th><th>sin</th><th>cos</th><th>tan</th></tr></thead><tbody>
+          <tr data-q="1"><td>ربع اول</td><td class="plus">+</td><td class="plus">+</td><td class="plus">+</td></tr>
+          <tr data-q="2"><td>ربع دوم</td><td class="plus">+</td><td class="minus">−</td><td class="minus">−</td></tr>
+          <tr data-q="3"><td>ربع سوم</td><td class="minus">−</td><td class="minus">−</td><td class="plus">+</td></tr>
+          <tr data-q="4"><td>ربع چهارم</td><td class="minus">−</td><td class="plus">+</td><td class="minus">−</td></tr>
+        </tbody></table>
+      </div>
+    </section>
+    <section class="panel lower-panel">
+      <div class="panel-head"><div class="panel-title">آزمایش و تمرین</div><span class="subtle">QUICK CHALLENGE</span></div>
+      <div class="lower-content">
+        <p style="font-size:12px;margin:0 0 10px;color:var(--muted)">برای زاویه فعلی، مقدارهای تقریبی سه نسبت را پیش‌بینی کن. پاسخ‌ها را به‌صورت عدد اعشاری وارد کن.</p>
+        <div class="quiz">
+          <label>sin θ<input type="number" id="quizSin" step="any" placeholder="پاسخ"></label>
+          <label>cos θ<input type="number" id="quizCos" step="any" placeholder="پاسخ"></label>
+          <label>tan θ<input type="number" id="quizTan" step="any" placeholder="پاسخ"></label>
+        </div>
+        <div class="quiz-actions"><button class="btn primary" id="checkQuiz">بررسی پاسخ‌ها</button><button class="btn" id="showAnswer">نمایش پاسخ</button><button class="btn" id="clearQuiz">پاک‌کردن</button></div>
+        <div class="feedback" id="quizFeedback" aria-live="polite">تلورانس پاسخ عددی: ۰٫۰۱</div>
+      </div>
+    </section>
+    <section class="panel lower-panel">
+      <div class="panel-head"><div class="panel-title">نکته‌های مهم</div><span class="subtle">REMEMBER</span></div>
+      <div class="lower-content" style="font-size:12px;color:var(--muted);line-height:2">
+        <div>● سینوس و کسینوس همیشه بین ۱− و ۱+ هستند.</div>
+        <div>● تانژانت در زاویه‌های ۹۰° و ۲۷۰° (و هم‌ارزهای آن‌ها) تعریف نمی‌شود.</div>
+        <div>● با افزودن ۳۶۰° به زاویه، نقطه و نسبت‌های مثلثاتی تغییر نمی‌کنند.</div>
+        <div>● علامت نسبت‌ها را از مختصات نقطه در ربع‌ها تشخیص بده.</div>
+      </div>
+    </section>
+  </section>
+  <footer class="footer">ابزار آموزشی تعاملی ریاضی · دایره مثلثاتی · قابل اجرا به‌صورت آفلاین · طراحی‌شده برای یادگیری اکتشافی</footer>
+</div>
+<script>
+(() => {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const cx = 280, cy = 280, R = 210;
+  const state = { angle: 45, rotating: false, timer: null, showTangent: true, showLabels: true, dragging: false };
+  const special = {
+    0:   ['۰','۱','۰'], 30: ['۱/۲','√۳/۲','√۳/۳'], 45:['√۲/۲','√۲/۲','۱'],
+    60:['√۳/۲','۱/۲','√۳'], 90:['۱','۰','تعریف‌نشده'], 120:['√۳/۲','−۱/۲','−√۳'],
+    135:['√۲/۲','−√۲/۲','−۱'], 150:['۱/۲','−√۳/۲','−√۳/۳'], 180:['۰','−۱','۰'],
+    210:['−۱/۲','−√۳/۲','√۳/۳'], 225:['−√۲/۲','−√۲/۲','۱'], 240:['−√۳/۲','−۱/۲','√۳'],
+    270:['−۱','۰','تعریف‌نشده'], 300:['−√۳/۲','۱/۲','−√۳'], 315:['−√۲/۲','√۲/۲','−۱'],
+    330:['−۱/۲','√۳/۲','−√۳/۳'], 360:['۰','۱','۰']
+  };
+  const knownAngles = Object.keys(special).map(Number);
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  const norm = (a) => ((a % 360) + 360) % 360;
+  const clean = (v) => Math.abs(v) < 1e-10 ? 0 : v;
+  const fmt = (v) => clean(v).toFixed(4);
+  const fa = (s) => String(s).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[Number(d)]).replace('-', '−');
+  const gcd = (a,b) => b ? gcd(b,a%b) : Math.abs(a);
+  function radianLabel(deg) {
+    const n0 = Math.round(deg * 10), d0 = 1800, g = gcd(n0, d0);
+    let n = n0 / (g || 1), d = d0 / (g || 1);
+    if (n === 0) return '۰ rad';
+    const sign = n < 0 ? '−' : ''; n = Math.abs(n);
+    let core = n === 1 ? 'π' : `${fa(n)}π`;
+    if (d === 1) return `${sign}${core} rad`;
+    return `${sign}${core} / ${fa(d)} rad`;
+  }
+  function exactValues(angle) {
+    let a = norm(angle);
+    if (Math.abs(a-360) < 1e-8) a = 0;
+    for (const k of knownAngles) {
+      const kn = norm(k);
+      if (Math.abs(a-kn) < 1e-7) return special[k];
+    }
+    return null;
+  }
+  function quadrant(angle) {
+    const a = norm(angle);
+    if (Math.abs(a) < 1e-8 || Math.abs(a-360) < 1e-8) return {name:'محور x مثبت',q:0,signs:['۰','+','۰']};
+    if (Math.abs(a-90) < 1e-8) return {name:'محور y مثبت',q:0,signs:['+','۰','تعریف‌نشده']};
+    if (Math.abs(a-180) < 1e-8) return {name:'محور x منفی',q:0,signs:['۰','−','۰']};
+    if (Math.abs(a-270) < 1e-8) return {name:'محور y منفی',q:0,signs:['−','۰','تعریف‌نشده']};
+    if (a < 90) return {name:'ربع اول',q:1,signs:['+','+','+']};
+    if (a < 180) return {name:'ربع دوم',q:2,signs:['+','−','−']};
+    if (a < 270) return {name:'ربع سوم',q:3,signs:['−','−','+']};
+    return {name:'ربع چهارم',q:4,signs:['−','+','−']};
+  }
+  function setLine(id,x1,y1,x2,y2){const el=$(id);el.setAttribute('x1',x1);el.setAttribute('y1',y1);el.setAttribute('x2',x2);el.setAttribute('y2',y2);}
+  function initTicks(){
+    const g=$('ticks'); let html='';
+    for(let deg=0;deg<360;deg+=15){
+      const a=deg*Math.PI/180, major=deg%30===0, x1=cx+(R-(major?9:5))*Math.cos(a), y1=cy-(R-(major?9:5))*Math.sin(a), x2=cx+R*Math.cos(a), y2=cy-R*Math.sin(a);
+      html+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${major?'rgba(179,207,250,.75)':'rgba(149,180,230,.34)'}" stroke-width="${major?1.6:1}"/>`;
+      if(deg%30===0){const tx=cx+(R+23)*Math.cos(a),ty=cy-(R+23)*Math.sin(a);html+=`<text x="${tx}" y="${ty+4}" text-anchor="middle" fill="rgba(190,210,242,.78)" font-size="10">${fa(deg)}°</text>`;}
+    }
+    g.innerHTML=html;
+  }
+  function update(angle, source='') {
+    angle=clamp(Number(angle),-360,720);
+    if(!Number.isFinite(angle)) return;
+    state.angle=angle;
+    const rad=angle*Math.PI/180, x=clean(Math.cos(rad)), y=clean(Math.sin(rad)), t=Math.abs(x)<1e-10?null:y/x;
+    const px=cx+R*x, py=cy-R*y, q=quadrant(angle), ex=exactValues(angle);
+    $('angleBig').textContent=`${fa(Number.isInteger(angle)?angle:angle.toFixed(1))}°`;
+    $('angleRad').textContent=radianLabel(angle);
+    if(source!=='slider') $('angleSlider').value=String(angle);
+    if(source!=='input') $('angleInput').value=String(Number(angle.toFixed(1)));
+    $('sinValue').textContent=fmt(y); $('cosValue').textContent=fmt(x); $('tanValue').textContent=t===null?'تعریف‌نشده':fmt(t);
+    $('sinExact').textContent=ex?ex[0]:'تقریبی'; $('cosExact').textContent=ex?ex[1]:'تقریبی'; $('tanExact').textContent=ex?ex[2]:(t===null?'مخرج صفر است':'تقریبی');
+    $('coordValue').textContent=`P ( ${fmt(x)} , ${fmt(y)} )`;
+    $('quadrantName').textContent=q.name;
+    [['sinSign',q.signs[0]],['cosSign',q.signs[1]],['tanSign',q.signs[2]]].forEach(([id,s])=>{const el=$(id);el.textContent=s;el.className=(s==='+'?'plus':s==='−'?'minus':'undefined');});
+    document.querySelectorAll('.sign-table tr').forEach(tr=>tr.classList.toggle('current',Number(tr.dataset.q)===q.q && q.q!==0));
+    const explanation = t===null
+      ? `<strong>چگونه بخوانیم؟</strong><br>نقطه روی محور عمودی قرار دارد؛ پس <b>cos θ = ۰</b> است. چون تقسیم بر صفر تعریف نمی‌شود، <b>tan θ تعریف‌نشده</b> است.`
+      : `<strong>چگونه بخوانیم؟</strong><br>مختصات نقطه <b dir="ltr">(${fmt(x)}, ${fmt(y)})</b> است؛ بنابراین <b dir="ltr">cos θ = ${fmt(x)}</b> و <b dir="ltr">sin θ = ${fmt(y)}</b>. با تقسیم مؤلفه عمودی بر افقی، <b dir="ltr">tan θ = ${fmt(t)}</b> به‌دست می‌آید.`;
+    $('explanation').innerHTML=explanation;
+    // Radius and projections
+    setLine('radiusLine',cx,cy,px,py); setLine('projectionLine',px,py,px,cy);
+    setLine('cosSegment',cx,cy,px,cy); setLine('sinSegment',px,cy,px,py);
+    $('movingPoint').setAttribute('cx',px);$('movingPoint').setAttribute('cy',py);$('pointHalo').setAttribute('cx',px);$('pointHalo').setAttribute('cy',py);
+    // Angle arc uses a small radius and follows the positive mathematical direction.
+    const arcR=43, a2=-rad, normalized=norm(angle);
+    const exx=cx+arcR*Math.cos(a2), eyy=cy+arcR*Math.sin(a2);
+    const largeArcFlag=normalized>180?1:0;
+    $('angleArc').setAttribute('d', normalized<1e-8?'':`M ${cx+arcR} ${cy} A ${arcR} ${arcR} 0 ${largeArcFlag} 0 ${exx} ${eyy}`);
+    // Tangent construction: x=1 is tangent to the unit circle; clip distant intersections.
+    const tangentY=cy-R*t;
+    const showT=state.showTangent && t!==null && Math.abs(t)<=1.12;
+    $('tangentGroup').style.display=state.showTangent?'':'none';
+    $('tangentSegment').style.display=showT?'':'none'; $('tangentPoint').style.display=showT?'':'none';
+    if(showT){setLine('tangentSegment',cx+R,cy,cx+R,tangentY);$('tangentPoint').setAttribute('cx',cx+R);$('tangentPoint').setAttribute('cy',tangentY);}
+    $('diagramLabels').style.display=state.showLabels?'':'none';
+    $('quadrantTexts').style.display=state.showLabels?'':'none';
+    $('cosLabel').setAttribute('x',(cx+px)/2);$('cosLabel').setAttribute('y',cy+19);$('cosLabel').setAttribute('text-anchor','middle');
+    $('sinLabel').setAttribute('x',px+(x>=0?9:-9));$('sinLabel').setAttribute('y',(cy+py)/2);$('sinLabel').setAttribute('text-anchor',x>=0?'start':'end');
+    $('pointLabel').setAttribute('x',px+(x>=0?12:-12));$('pointLabel').setAttribute('y',py-12);$('pointLabel').setAttribute('text-anchor',x>=0?'start':'end');
+    document.querySelectorAll('.preset').forEach(b=>{const presetAngle=Number(b.dataset.angle);const selected=Math.abs(angle-360)<1e-7?presetAngle===360:(presetAngle!==360&&Math.abs(presetAngle-norm(angle))<1e-7);b.classList.toggle('selected',selected);});
+  }
+  function stopRotation(){state.rotating=false;if(state.timer)clearInterval(state.timer);state.timer=null;$('rotateBtn').textContent='▶ چرخش خودکار';$('rotateBtn').classList.remove('active');}
+  function toggleRotation(){if(state.rotating){stopRotation();return;}state.rotating=true;$('rotateBtn').textContent='Ⅱ توقف چرخش';$('rotateBtn').classList.add('active');state.timer=setInterval(()=>{let next=state.angle+1;if(next>720)next=-360;update(next);},35);}
+  function pointerAngle(evt){const rect=$('unitCircle').getBoundingClientRect();const sx=(evt.clientX-rect.left)*560/rect.width,sy=(evt.clientY-rect.top)*560/rect.height;let a=Math.atan2(cy-sy,sx-cx)*180/Math.PI;if(a<0)a+=360;return a;}
+  function onPointerMove(evt){if(!state.dragging)return;evt.preventDefault();update(pointerAngle(evt));}
+  $('angleSlider').addEventListener('input',e=>{stopRotation();update(Number(e.target.value),'slider');});
+  $('angleInput').addEventListener('change',e=>{stopRotation();const raw=e.target.value.trim();const v=Number(raw);if(raw!==''&&Number.isFinite(v)&&v>=-360&&v<=720)update(v,'input');else{e.target.value=state.angle;}});
+  $('minusBtn').addEventListener('click',()=>{stopRotation();update(state.angle-15);});
+  $('plusBtn').addEventListener('click',()=>{stopRotation();update(state.angle+15);});
+  $('resetBtn').addEventListener('click',()=>{stopRotation();update(0);});
+  $('rotateBtn').addEventListener('click',toggleRotation);
+  document.querySelectorAll('.preset').forEach(b=>b.addEventListener('click',()=>{stopRotation();update(Number(b.dataset.angle));}));
+  $('showTangent').addEventListener('change',e=>{state.showTangent=e.target.checked;update(state.angle);});
+  $('showLabels').addEventListener('change',e=>{state.showLabels=e.target.checked;update(state.angle);});
+  $('snapBtn').addEventListener('click',()=>{stopRotation();update(Math.round(state.angle));});
+  $('themeBtn').addEventListener('click',()=>{document.body.classList.toggle('light');$('themeBtn').textContent=document.body.classList.contains('light')?'☾':'☼';});
+  const svg=$('unitCircle');
+  svg.addEventListener('pointerdown',e=>{state.dragging=true;stopRotation();svg.setPointerCapture(e.pointerId);update(pointerAngle(e));});
+  svg.addEventListener('pointermove',onPointerMove);
+  svg.addEventListener('pointerup',e=>{state.dragging=false;try{svg.releasePointerCapture(e.pointerId);}catch(_){}});
+  svg.addEventListener('pointercancel',()=>state.dragging=false);
+  // Keyboard angle control when the diagram is focused.
+  svg.setAttribute('tabindex','0');svg.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowUp'){e.preventDefault();stopRotation();update(state.angle+1);}if(e.key==='ArrowLeft'||e.key==='ArrowDown'){e.preventDefault();stopRotation();update(state.angle-1);}});
+  $('checkQuiz').addEventListener('click',()=>{
+    const a=state.angle*Math.PI/180, vals=[Math.sin(a),Math.cos(a),Math.abs(Math.cos(a))<1e-10?null:Math.tan(a)], ids=['quizSin','quizCos','quizTan'];
+    let correct=0, count=0, notes=[];
+    ids.forEach((id,i)=>{const raw=$(id).value.trim();if(raw==='')return;count++;const v=Number(raw);if(vals[i]===null){notes.push(i===2&&['undefined','تعریف‌نشده','تعریف نشده'].includes(raw.toLowerCase())?'tan: درست':'tan: باید «تعریف‌نشده» باشد');if(i===2&&['undefined','تعریف‌نشده','تعریف نشده'].includes(raw.toLowerCase()))correct++;}else if(Number.isFinite(v)&&Math.abs(v-vals[i])<=.01){correct++;notes.push(['sin','cos','tan'][i]+': درست');}else notes.push(['sin','cos','tan'][i]+': نادرست');});
+    $('quizFeedback').textContent=count===0?'ابتدا دست‌کم یک پاسخ وارد کن.':`نتیجه: ${fa(correct)} از ${fa(count)} پاسخ درست. ${notes.join(' · ')}`;
+    $('quizFeedback').style.color=correct===count?'var(--lime)':'var(--muted)';
+  });
+  $('showAnswer').addEventListener('click',()=>{const a=state.angle*Math.PI/180;$('quizSin').value=fmt(Math.sin(a));$('quizCos').value=fmt(Math.cos(a));$('quizTan').value=Math.abs(Math.cos(a))<1e-10?'undefined':fmt(Math.tan(a));$('quizFeedback').textContent='پاسخ‌های زاویه فعلی نمایش داده شدند.';$('quizFeedback').style.color='var(--cyan)';});
+  $('clearQuiz').addEventListener('click',()=>{['quizSin','quizCos','quizTan'].forEach(id=>$(id).value='');$('quizFeedback').textContent='پاسخ‌ها پاک شدند.';$('quizFeedback').style.color='var(--muted)';});
+  window.addEventListener('keydown',e=>{if(e.target.matches('input,button'))return;if(e.key==='ArrowRight'){stopRotation();update(state.angle+1);}if(e.key==='ArrowLeft'){stopRotation();update(state.angle-1);}});
+  window.addEventListener('beforeunload',stopRotation);
+  initTicks();update(45);
+})();
+</script>
+</body>
+</html>
